@@ -32,6 +32,7 @@ from litedram import modules as litedram_modules
 #from litedram import phy as litedram_phys
 from litedram.init import get_sdram_phy_py_header
 from litedram.core.controller import ControllerSettings
+from litedram.frontend.dma import LiteDRAMDMAReader
 
 from liteeth.phy.mii import LiteEthPHYMII
 
@@ -42,6 +43,7 @@ from liteeth.frontend.etherbone import LiteEthEtherbone
 from litex.soc.cores import uart
 
 from rowhammer_tester.gateware.rowhammer import RowHammerDMA
+from rowhammer_tester.gateware.bist import BistWriter, BistReader
 from rowhammer_tester.gateware.payload_executor import PayloadExecutor
 
 # CRG ----------------------------------------------------------------------------------------------
@@ -232,8 +234,6 @@ class BaseSoC(SoCCore):
             self.comb += platform.trace.eq(1)
 
         # Rowhammer --------------------------------------------------------------------------------
-        from litedram.frontend.dma import LiteDRAMDMAReader, LiteDRAMDMAWriter
-
         self.submodules.rowhammer_dma = LiteDRAMDMAReader(self.sdram.crossbar.get_port())
         self.submodules.rowhammer = RowHammerDMA(self.rowhammer_dma)
         self.add_csr("rowhammer")
@@ -256,7 +256,6 @@ class BaseSoC(SoCCore):
 
         # Bist -------------------------------------------------------------------------------------
         if not args.no_memory_bist:
-            from litedram.frontend.bist import LiteDRAMBISTGenerator, LiteDRAMBISTChecker
 
             # ------------------------------ writer ------------------------------------
             memory_w0  = Memory(32, 1024)
@@ -271,65 +270,6 @@ class BaseSoC(SoCCore):
             add_xram(self, name='pattern_w3',  mem=memory_w3, origin=0x23000000)
             add_xram(self, name='pattern_adr', mem=memory_adr, origin=0x24000000)
 
-            class Writer(Module, AutoCSR):
-                def __init__(self, dram_port, w0_port, w1_port, w2_port, w3_port, adr_port):
-                    self.reset        = CSRStorage()
-                    self.start        = CSRStorage()
-                    self.done         = CSRStatus()
-
-                    self.count        = CSRStorage(size=(32*1))
-
-                    self.mem_base     = CSRStorage(size=32)
-                    self.mem_mask     = CSRStorage(size=32)
-                    self.data_mask    = CSRStorage(size=32) # patterns
-
-                    dma = LiteDRAMDMAWriter(dram_port, fifo_depth=1)
-                    self.submodules += dma
-
-                    cmd_counter = Signal(32)
-
-                    self.comb += [
-                        w0_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        w1_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        w2_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        w3_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        adr_port.adr.eq(cmd_counter & self.data_mask.storage),
-                    ]
-
-                    self.comb += [
-                        dma.sink.address.eq(self.mem_base.storage + adr_port.dat_r + (cmd_counter & self.mem_mask.storage)),
-                        dma.sink.data.eq(Cat(w0_port.dat_r, w1_port.dat_r, w2_port.dat_r, w3_port.dat_r)),
-                    ]
-
-                    fsm = FSM(reset_state="IDLE")
-                    self.submodules += fsm
-                    fsm.act("IDLE",
-                        If(self.start.storage,
-                            NextValue(cmd_counter, 0),
-                            NextState("WAIT"),
-                        )
-                    )
-                    fsm.act("WAIT",
-                        If(cmd_counter >= self.count.storage,
-                            NextState("DONE")
-                        ).Else(
-                            NextState("RUN")
-                        )
-                    )
-                    fsm.act("RUN",
-                        dma.sink.valid.eq(1),
-                        If(dma.sink.ready,
-                            NextValue(cmd_counter, cmd_counter + 1),
-                            NextState("WAIT")
-                        )
-                    )
-                    fsm.act("DONE",
-                        self.done.status.eq(1),
-                        If(self.reset.storage,
-                            NextState("IDLE"))
-                    )
-
-
             dram_port = self.sdram.crossbar.get_port()
             w0_port   = memory_w0.get_port()
             w1_port   = memory_w1.get_port()
@@ -337,8 +277,8 @@ class BaseSoC(SoCCore):
             w3_port   = memory_w3.get_port()
             adr_port  = memory_adr.get_port()
             self.specials += w0_port, w1_port, w2_port, w3_port, adr_port
-            self.submodules.writer = Writer(dram_port,
-                                            w0_port, w1_port, w2_port, w3_port, adr_port)
+            self.submodules.writer = BistWriter(
+                dram_port, w0_port, w1_port, w2_port, w3_port, adr_port)
             self.add_csr('writer')
 
             # ----------------------------- reader -------------------------------------
@@ -354,77 +294,6 @@ class BaseSoC(SoCCore):
             add_xram(self, name='pattern_rd_w3',  mem=memory_rd_w3,  origin=0x33000000)
             add_xram(self, name='pattern_rd_adr', mem=memory_rd_adr, origin=0x34000000)
 
-            class Reader(Module, AutoCSR):
-                def __init__(self, dram_port, w0_port, w1_port, w2_port, w3_port, adr_port):
-                    self.reset        = CSRStorage()
-                    self.start        = CSRStorage()
-                    self.done         = CSRStatus()
-
-                    self.count        = CSRStorage(size=32)
-                    self.pointer      = CSRStatus(size=32)
-
-                    self.mem_base     = CSRStorage(size=32)
-                    self.mem_mask     = CSRStorage(size=32)
-                    self.data_mask    = CSRStorage(size=32) # patterns
-
-                    dma = LiteDRAMDMAReader(dram_port, fifo_depth=1, fifo_buffered=False)
-                    self.submodules += dma
-
-                    cmd_counter = Signal(32)
-
-                    self.comb += [
-                        w0_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        w1_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        w2_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        w3_port.adr.eq(cmd_counter & self.data_mask.storage),
-                        adr_port.adr.eq(cmd_counter & self.data_mask.storage),
-                    ]
-
-                    data_pattern = Signal(32 * 4)
-                    self.comb += [
-                        dma.sink.address.eq(self.mem_base.storage + adr_port.dat_r + (cmd_counter & self.mem_mask.storage)),
-                        data_pattern.eq(Cat(w0_port.dat_r, w1_port.dat_r, w2_port.dat_r, w3_port.dat_r)),
-                    ]
-
-                    fsm = FSM(reset_state="IDLE")
-                    self.submodules += fsm
-                    fsm.act("IDLE",
-                        If(self.start.storage,
-                            NextValue(cmd_counter, 0),
-                            NextValue(self.pointer.status, 0xdeadbeef),
-                            NextState("WAIT"),
-                        )
-                    )
-                    fsm.act("WAIT",
-                        If(cmd_counter >= self.count.storage,
-                            NextState("DONE")
-                        ).Else(
-                            NextState("WR_ADR")
-                        )
-                    )
-                    fsm.act("WR_ADR",
-                        dma.sink.valid.eq(1),
-                        If(dma.sink.ready,
-                            NextState("RD_DATA")
-                        )
-                    )
-                    fsm.act("RD_DATA",
-                        dma.source.ready.eq(1),
-                        If(dma.source.valid,
-                            NextValue(cmd_counter, cmd_counter + 1),
-                            If(dma.source.data != data_pattern,
-                                NextValue(self.pointer.status, cmd_counter)
-                            ),
-                            NextState("WAIT")
-                        )
-                    )
-                    fsm.act("DONE",
-                        self.done.status.eq(1),
-                        If(self.reset.storage,
-                            NextState("IDLE"))
-                    )
-
-
             dram_rd_port = self.sdram.crossbar.get_port()
             w0_port   = memory_rd_w0.get_port()
             w1_port   = memory_rd_w1.get_port()
@@ -432,8 +301,8 @@ class BaseSoC(SoCCore):
             w3_port   = memory_rd_w3.get_port()
             adr_port  = memory_rd_adr.get_port()
             self.specials += w0_port, w1_port, w2_port, w3_port, adr_port
-            self.submodules.reader = Reader(dram_rd_port,
-                                            w0_port, w1_port, w2_port, w3_port, adr_port)
+            self.submodules.reader = BistReader(
+                dram_rd_port, w0_port, w1_port, w2_port, w3_port, adr_port)
             self.add_csr('reader')
 
         # Payload executor -------------------------------------------------------------------------
