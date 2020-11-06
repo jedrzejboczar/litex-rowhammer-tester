@@ -40,8 +40,8 @@ from liteeth.frontend.etherbone import LiteEthEtherbone
 
 from litex.soc.cores import uart
 
-from rowhammer import RowHammerDMA
-from payload_executor import PayloadExecutor
+from rowhammer_tester.gateware.rowhammer import RowHammerDMA
+from rowhammer_tester.gateware.payload_executor import PayloadExecutor
 
 # CRG ----------------------------------------------------------------------------------------------
 
