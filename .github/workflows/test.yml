@@ -1,0 +1,30 @@
+name: test
+
+on:
+  push:
+    branches: [ master jboc/dev ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout litex-rowhammer-tester
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          submodules: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Build targets
+        run:
+          make
+          make sim
