@@ -12,7 +12,6 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/default.js"></script>
     <script src="_static/WaveDrom.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -56,8 +55,8 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 <h2>Register Listing for WRITER<a class="headerlink" href="#register-listing-for-writer" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 54%" />
-<col style="width: 46%" />
+<col style="width: 58%" />
+<col style="width: 42%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Register</p></th>
@@ -66,28 +65,34 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="reference internal" href="#writer-start"><span class="std std-ref">WRITER_START</span></a></p></td>
-<td><p><a class="reference internal" href="#writer-start"><span class="std std-ref">0x00005800</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-start"><span class="std std-ref">0x82006800</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#writer-ready"><span class="std std-ref">WRITER_READY</span></a></p></td>
-<td><p><a class="reference internal" href="#writer-ready"><span class="std std-ref">0x00005804</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-ready"><span class="std std-ref">0x82006804</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#writer-count"><span class="std std-ref">WRITER_COUNT</span></a></p></td>
-<td><p><a class="reference internal" href="#writer-count"><span class="std std-ref">0x00005808</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-count"><span class="std std-ref">0x82006808</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#writer-done"><span class="std std-ref">WRITER_DONE</span></a></p></td>
-<td><p><a class="reference internal" href="#writer-done"><span class="std std-ref">0x0000580c</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-done"><span class="std std-ref">0x8200680c</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#writer-mem-mask"><span class="std std-ref">WRITER_MEM_MASK</span></a></p></td>
-<td><p><a class="reference internal" href="#writer-mem-mask"><span class="std std-ref">0x00005810</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-mem-mask"><span class="std std-ref">0x82006810</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#writer-data-mask"><span class="std std-ref">WRITER_DATA_MASK</span></a></p></td>
-<td><p><a class="reference internal" href="#writer-data-mask"><span class="std std-ref">0x00005814</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-data-mask"><span class="std std-ref">0x82006814</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#writer-inverter-divisor-mask"><span class="std std-ref">WRITER_INVERTER_DIVISOR_MASK</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-inverter-divisor-mask"><span class="std std-ref">0x82006818</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#writer-inverter-selection-mask"><span class="std std-ref">WRITER_INVERTER_SELECTION_MASK</span></a></p></td>
+<td><p><a class="reference internal" href="#writer-inverter-selection-mask"><span class="std std-ref">0x8200681c</span></a></p></td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="writer-start">
 <h3>WRITER_START<a class="headerlink" href="#writer-start" title="Permalink to this headline">¶</a></h3>
-<p><cite>Address: 0x00005800 + 0x0 = 0x00005800</cite></p>
+<p><cite>Address: 0x82006800 + 0x0 = 0x82006800</cite></p>
 <blockquote>
 <div><p>Write to the register starts the transfer (if ready=1)</p>
 
@@ -105,7 +110,7 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 </div>
 <div class="section" id="writer-ready">
 <h3>WRITER_READY<a class="headerlink" href="#writer-ready" title="Permalink to this headline">¶</a></h3>
-<p><cite>Address: 0x00005800 + 0x4 = 0x00005804</cite></p>
+<p><cite>Address: 0x82006800 + 0x4 = 0x82006804</cite></p>
 <blockquote>
 <div><p>Indicates that the transfer is not ongoing</p>
 
@@ -123,7 +128,7 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 </div>
 <div class="section" id="writer-count">
 <h3>WRITER_COUNT<a class="headerlink" href="#writer-count" title="Permalink to this headline">¶</a></h3>
-<p><cite>Address: 0x00005800 + 0x8 = 0x00005808</cite></p>
+<p><cite>Address: 0x82006800 + 0x8 = 0x82006808</cite></p>
 <blockquote>
 <div><p>Desired number of DMA transfers</p>
 
@@ -140,7 +145,7 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 </div>
 <div class="section" id="writer-done">
 <h3>WRITER_DONE<a class="headerlink" href="#writer-done" title="Permalink to this headline">¶</a></h3>
-<p><cite>Address: 0x00005800 + 0xc = 0x0000580c</cite></p>
+<p><cite>Address: 0x82006800 + 0xc = 0x8200680c</cite></p>
 <blockquote>
 <div><p>Number of completed DMA transfers</p>
 
@@ -157,7 +162,7 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 </div>
 <div class="section" id="writer-mem-mask">
 <h3>WRITER_MEM_MASK<a class="headerlink" href="#writer-mem-mask" title="Permalink to this headline">¶</a></h3>
-<p><cite>Address: 0x00005800 + 0x10 = 0x00005810</cite></p>
+<p><cite>Address: 0x82006800 + 0x10 = 0x82006810</cite></p>
 <blockquote>
 <div><p>DRAM address mask for DMA transfers</p>
 
@@ -174,7 +179,7 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 </div>
 <div class="section" id="writer-data-mask">
 <h3>WRITER_DATA_MASK<a class="headerlink" href="#writer-data-mask" title="Permalink to this headline">¶</a></h3>
-<p><cite>Address: 0x00005800 + 0x14 = 0x00005814</cite></p>
+<p><cite>Address: 0x82006800 + 0x14 = 0x82006814</cite></p>
 <blockquote>
 <div><p>Pattern memory address mask</p>
 
@@ -183,6 +188,41 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 {
     "reg": [
         {"name": "data_mask[31:0]", "bits": 32}
+    ], "config": {"hspace": 400, "bits": 32, "lanes": 1 }, "options": {"hspace": 400, "bits": 32, "lanes": 1}
+}
+</script>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="writer-inverter-divisor-mask">
+<h3>WRITER_INVERTER_DIVISOR_MASK<a class="headerlink" href="#writer-inverter-divisor-mask" title="Permalink to this headline">¶</a></h3>
+<p><cite>Address: 0x82006800 + 0x18 = 0x82006818</cite></p>
+<blockquote>
+<div><p>Divisor mask for selecting rows for which pattern data gets inverted</p>
+
+<div style="overflow-x:auto">
+<script type="WaveDrom">
+{
+    "reg": [
+        {"name": "inverter_divisor_mask[4:0]", "bits": 5},
+        {"bits": 27},
+    ], "config": {"hspace": 400, "bits": 32, "lanes": 4 }, "options": {"hspace": 400, "bits": 32, "lanes": 4}
+}
+</script>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="writer-inverter-selection-mask">
+<h3>WRITER_INVERTER_SELECTION_MASK<a class="headerlink" href="#writer-inverter-selection-mask" title="Permalink to this headline">¶</a></h3>
+<p><cite>Address: 0x82006800 + 0x1c = 0x8200681c</cite></p>
+<blockquote>
+<div><p>Selection mask for selecting rows for which pattern data gets inverted</p>
+
+<div style="overflow-x:auto">
+<script type="WaveDrom">
+{
+    "reg": [
+        {"name": "inverter_selection_mask[31:0]", "bits": 32}
     ], "config": {"hspace": 400, "bits": 32, "lanes": 1 }, "options": {"hspace": 400, "bits": 32, "lanes": 1}
 }
 </script>
@@ -227,6 +267,7 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
 <li class="toctree-l1"><a class="reference internal" href="ddrphy.html">DDRPHY</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_settings.html">CONTROLLER_SETTINGS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sdram.html">SDRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ddrctrl.html">DDRCTRL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethphy.html">ETHPHY</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rowhammer.html">ROWHAMMER</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">WRITER</a></li>
@@ -266,10 +307,10 @@ the operation. When the operation is ongoing <cite>ready</cite> will be 0.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2020, Antmicro.
+      &copy;2021, Antmicro.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

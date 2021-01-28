@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentation for LiteX Row Hammer Tester &#8212; LiteX Row Hammer Tester  documentation</title>
+    <title>DDRCTRL &#8212; LiteX Row Hammer Tester  documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,7 +16,8 @@
     <script src="_static/WaveDrom.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Interrupt Controller" href="interrupts.html" />
+    <link rel="next" title="ETHPHY" href="ethphy.html" />
+    <link rel="prev" title="SDRAM" href="sdram.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,45 +34,64 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="documentation-for-litex-row-hammer-tester">
-<h1>Documentation for LiteX Row Hammer Tester<a class="headerlink" href="#documentation-for-litex-row-hammer-tester" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="ddrctrl">
+<h1>DDRCTRL<a class="headerlink" href="#ddrctrl" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="register-listing-for-ddrctrl">
+<h2>Register Listing for DDRCTRL<a class="headerlink" href="#register-listing-for-ddrctrl" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Register</p></th>
+<th class="head"><p>Address</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddrctrl-init-done"><span class="std std-ref">DDRCTRL_INIT_DONE</span></a></p></td>
+<td><p><a class="reference internal" href="#ddrctrl-init-done"><span class="std std-ref">0x82005000</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddrctrl-init-error"><span class="std std-ref">DDRCTRL_INIT_ERROR</span></a></p></td>
+<td><p><a class="reference internal" href="#ddrctrl-init-error"><span class="std std-ref">0x82005004</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="ddrctrl-init-done">
+<h3>DDRCTRL_INIT_DONE<a class="headerlink" href="#ddrctrl-init-done" title="Permalink to this headline">¶</a></h3>
+<p><cite>Address: 0x82005000 + 0x0 = 0x82005000</cite></p>
+<blockquote>
+<div>
+<div style="overflow-x:auto">
+<script type="WaveDrom">
+{
+    "reg": [
+        {"name": "init_done", "bits": 1},
+        {"bits": 31},
+    ], "config": {"hspace": 400, "bits": 32, "lanes": 4 }, "options": {"hspace": 400, "bits": 32, "lanes": 4}
+}
+</script>
 </div>
-<div class="section" id="modules">
-<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="interrupts.html">Interrupt Controller</a></li>
-</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ddrctrl-init-error">
+<h3>DDRCTRL_INIT_ERROR<a class="headerlink" href="#ddrctrl-init-error" title="Permalink to this headline">¶</a></h3>
+<p><cite>Address: 0x82005000 + 0x4 = 0x82005004</cite></p>
+<blockquote>
+<div>
+<div style="overflow-x:auto">
+<script type="WaveDrom">
+{
+    "reg": [
+        {"name": "init_error", "bits": 1},
+        {"bits": 31},
+    ], "config": {"hspace": 400, "bits": 32, "lanes": 4 }, "options": {"hspace": 400, "bits": 32, "lanes": 4}
+}
+</script>
+</div>
+</div></blockquote>
 </div>
 </div>
-<div class="section" id="register-groups">
-<h1>Register Groups<a class="headerlink" href="#register-groups" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ctrl.html">CTRL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="identifier_mem.html">IDENTIFIER_MEM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uart.html">UART</a></li>
-<li class="toctree-l1"><a class="reference internal" href="timer0.html">TIMER0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="leds.html">LEDS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ddrphy.html">DDRPHY</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controller_settings.html">CONTROLLER_SETTINGS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sdram.html">SDRAM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ddrctrl.html">DDRCTRL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethphy.html">ETHPHY</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rowhammer.html">ROWHAMMER</a></li>
-<li class="toctree-l1"><a class="reference internal" href="writer.html">WRITER</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reader.html">READER</a></li>
-<li class="toctree-l1"><a class="reference internal" href="payload_executor.html">PAYLOAD_EXECUTOR</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
 </div>
 
     <script type="text/javascript">
@@ -87,7 +107,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">LiteX Row Hammer Tester</a></h1>
+<h1 class="logo"><a href="index.html">LiteX Row Hammer Tester</a></h1>
 
 
 
@@ -100,7 +120,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="interrupts.html">Interrupt Controller</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="ctrl.html">CTRL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="identifier_mem.html">IDENTIFIER_MEM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uart.html">UART</a></li>
@@ -109,7 +129,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ddrphy.html">DDRPHY</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_settings.html">CONTROLLER_SETTINGS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sdram.html">SDRAM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ddrctrl.html">DDRCTRL</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DDRCTRL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethphy.html">ETHPHY</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rowhammer.html">ROWHAMMER</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writer.html">WRITER</a></li>
@@ -120,8 +140,9 @@
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="interrupts.html" title="next chapter">Interrupt Controller</a></li>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="sdram.html" title="previous chapter">SDRAM</a></li>
+      <li>Next: <a href="ethphy.html" title="next chapter">ETHPHY</a></li>
   </ul></li>
 </ul>
 </div>
@@ -155,7 +176,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/index.rst.txt"
+      <a href="_sources/ddrctrl.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
