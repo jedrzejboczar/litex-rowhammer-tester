@@ -464,19 +464,7 @@ def main(row_hammer_cls):
     wb = RemoteClient()
     wb.open()
 
-    row_hammer = row_hammer_cls(
-        wb,
-        nrows=args.nrows,
-        settings=get_litedram_settings(),
-        column=args.column,
-        bank=args.bank,
-        rows_start=args.start_row,
-        verbose=args.verbose,
-        plot=args.plot,
-        no_refresh=args.no_refresh,
-        payload_executor=args.payload_executor,
-        data_inversion=args.data_inversion,
-    )
+    row_hammer = row_hammer_cls(wb, nrows=args.nrows, settings=get_litedram_settings(), column=args.column, bank=args.bank, rows_start=args.start_row, verbose=args.verbose, plot=args.plot, no_refresh=args.no_refresh, payload_executor=args.payload_executor, data_inversion=args.data_inversion)
 
     if args.hammer_only:
         row_hammer.attack(*args.hammer_only, read_count=args.read_count)
